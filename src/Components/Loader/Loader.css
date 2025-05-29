@@ -1,0 +1,141 @@
+/* Loader.css
+.loader-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: black;
+}
+
+.loader {
+  width: 50px;
+  height: 50px;
+  border: 5px solid #fff;
+  border-top: 5px solid #3498db;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+} */
+
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  padding: 0;
+  background: #0f0f0f;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.word {
+  display: inline-block;
+  margin-right: 1rem;
+}
+
+.word:last-child {
+  margin-right: 0;
+}
+
+
+.loader-container {
+  border: 2px solid white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(45deg, #0f0f0f, #1a1a1a);
+  padding: 1rem;
+}
+.site-name-container {
+  overflow: hidden;
+  margin-top: 30px;
+  text-align: center;
+  /* border: 2px solid red; */
+}
+.site-name {
+  /* border: 2px solid red; */
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  font-weight: 300;
+  color: #ffffff;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  /* display: flex; */
+  /* flex-direction: column; */
+  align-items: center;
+  gap: 0.5rem;
+}
+.coming-soon {
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  opacity: 0.8;
+}
+.letter {
+  display: inline-block;
+  animation: letterAnimation 2s infinite;
+  transform-origin: center;
+}
+.progress-bar {
+  margin-top: 20px;
+  width: min(160px, 80%);
+  height: 2px;
+  background: rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+.progress-fill {
+  position: absolute;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, #ffffff, transparent);
+  animation: progressMove 0.6s ease-in-out infinite;
+}
+@keyframes letterAnimation {
+  0%, 100% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+  25% {
+      opacity: 1;
+      transform: translateY(-5px);
+  }
+  50% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+@keyframes progressMove {
+  0% { transform: translateX(-150%); }
+  100% { transform: translateX(250%); }
+}
+@media (max-width: 768px) {
+  .site-name {
+      letter-spacing: 2px;
+  }
+}
+@media (max-width: 480px) {
+  .site-name {
+      letter-spacing: 1px;
+  }
+}
+@keyframes letterAnimation {
+  0% {
+      opacity: 0;
+      transform: translateY(10px);
+  }
+  100% {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+

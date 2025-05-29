@@ -1,0 +1,103 @@
+.clients-section {
+    text-align: left;
+    color: white;
+    margin-top: 100px;
+    background-color: #000; /* Black background */
+    overflow: hidden; /* Ensure no horizontal scrollbar appears */
+}
+
+.clients-section h2 {
+    font-size: 60px;
+    font-weight: 700;
+    margin: 0;
+    font-family: "Aspekta", sans-serif;
+    font-optical-sizing: auto;
+}
+
+.clients-section p {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* New marquee container for infinite scroll */
+.client-marquee-container {
+    width: 100%;
+    overflow: hidden;
+    position: relative;
+}
+
+.client-marquee {
+    display: flex;
+    animation: scroll 30s linear infinite;
+    width: fit-content;
+    /* Add this to ensure animation doesn't stutter */
+    will-change: transform;
+}
+
+@keyframes scroll {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%); /* Move left by half the width (since we duplicated the clients) */
+    }
+}
+
+.client-card {
+    padding: 0;
+    font-size: 18px;
+    display: flex;
+    height: 24vh;
+    font-weight: bold;
+    border-radius: 10px;
+    transition: transform 0.3s ease;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    position: relative;
+    margin: 0 20px; /* Add some spacing between items */
+    min-width: 200px; /* Ensure each client has a minimum width */
+}
+
+.client-card img {
+    width: 90%;
+    height: 90%;
+    object-fit: contain;
+    background-color: transparent;
+}
+
+@media (min-width: 1550px) {
+    .clients-section p {
+        font-size: 1.5rem;
+    }
+    .clients-section h2 {
+        font-size: 70px;
+    }
+    .client-card {
+        margin: 0 30px; /* Larger spacing on bigger screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .clients-section {
+        padding: 15px;
+        margin-top: 60px;
+    }
+    .clients-section h2 {
+        font-size: 48px;
+    }
+    .client-marquee {
+        animation: scroll 20s linear infinite; /* Slower for better visibility */
+    }
+    .client-card {
+        height: 15vh;
+        margin: 0 10px; /* Less spacing on mobile */
+        min-width: 120px; /* Smaller minimum width on mobile */
+    }
+    .client-card img {
+        width: 100%;
+        height: 80%;
+    }
+}
