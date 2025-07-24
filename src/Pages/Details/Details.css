@@ -3,7 +3,149 @@
   object-fit: cover;
   /* border: 2px solid yellow; */
 }
-/* .master  */
+
+/* Hero video container */
+.hero-container {
+  position: relative;
+  cursor: pointer;
+}
+
+/* Sound indicator for hero video */
+.hero-sound-indicator {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background-color: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 8px 12px;
+  border-radius: 20px;
+  font-size: 14px;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* Fullscreen modal overlay */
+.fullscreen-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.95);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  cursor: pointer;
+}
+
+/* Fullscreen modal close button */
+.fullscreen-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+}
+
+/* Fullscreen video container */
+.fullscreen-video-container {
+  width: 90vw;
+  height: 90vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Fullscreen video styles */
+.fullscreen-video {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+}
+
+/* Fullscreen ReactPlayer styles */
+.fullscreen-react-player {
+  max-width: 90vw;
+  max-height: 90vh;
+}
+
+/* Fullscreen instructions */
+.fullscreen-instructions {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  text-align: center;
+  font-size: 16px;
+  opacity: 0.8;
+}
+
+/* Navigation buttons for swiper */
+.swiper-nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 10;
+  padding: 12px;
+  border-radius: 50%;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(4px);
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.swiper-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.swiper-nav-btn.prev {
+  left: 0;
+}
+
+.swiper-nav-btn.next {
+  right: 0;
+}
+
+.swiper-nav-icon {
+  width: 24px;
+  height: 24px;
+  color: black;
+}
+
+/* Carousel video sound indicator */
+.carousel-sound-indicator {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 10px;
+  pointer-events: none;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
 .details-container {
   /* border: 2px solid red; */
   display: flex;
@@ -123,6 +265,8 @@
   align-items: center;
   overflow: hidden;
   transition: transform 0.3s ease; /* Smooth hover transition */
+  position: relative; /* Add this for carousel sound indicator positioning */
+  cursor: pointer; /* Add cursor pointer for video click */
 }
 
 /* Testimonial Video */
@@ -136,6 +280,11 @@
 /* Swiper container adjustments */
 .mySwiper {
   padding-bottom: 20px; /* Adds space below the swiper */
+}
+
+/* Portfolio section positioning */
+.portfolio-section {
+  position: relative;
 }
 
 /* Responsive Styling */
