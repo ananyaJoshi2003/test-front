@@ -29,7 +29,14 @@ const Details = () => {
   const [portfolios, setPortfolios] = useState({});
   const [isDataFetched, setIsDataFetched] = useState(false);
   const [videoUrls, setVideoUrls] = useState([]);
+  const [isMuted, setIsMuted] = useState(true);
+  const [carouselVideosMuted, setCarouselVideosMuted] = useState([]);
+  const [fullscreenVideo, setFullscreenVideo] = useState(null); // Track fullscreen video
+  const [fullscreenVideoType, setFullscreenVideoType] = useState(null); // 'hero' or 'carousel'
+  
   const swiperRef = useRef(null);
+  const videoRef = useRef(null);
+  const carouselVideoRefs = useRef([]);
 
   const [portfolioList, setPortfolioList] = useState([]);
 
@@ -39,6 +46,28 @@ const Details = () => {
       fetchPortfolioList();
     }
   }, [isDataFetched]);
+
+  // Handle escape key to exit fullscreen
+  useEffect(() => {
+    const handleEscape = (e) => {
+      if (e.key === 'Escape') {
+        setFullscreenVideo(null);
+        setFullscreenVideoType(null);
+      }
+    };
+
+    if (fullscreenVideo) {
+      document.addEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'hidden'; // Prevent background scroll
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+      document.body.style.overflow = 'unset';
+    };
+  }, [fullscreenVideo]);
 
   const fetchPortfolios = async () => {
     try {
@@ -52,6 +81,8 @@ const Details = () => {
         }
       }
       setVideoUrls(urls);
+      // Initialize muted state for carousel videos
+      setCarouselVideosMuted(new Array(urls.length).fill(true));
 
       setPortfolios(portfoliosData.data);
       setIsDataFetched(true);
@@ -70,6 +101,7 @@ const Details = () => {
       console.error("Error fetching portfolios:", error);
     }
   };
+
   function showImage(imageUrl) {
     let url = imageUrl;
     try {
@@ -83,87 +115,153 @@ const Details = () => {
     return url;
   }
 
-  // const videoId = "tgbNymZ7vqY"; // Replace with desired video ID
+  // Function to handle hero video click
+  const handleVideoClick = () => {
+    setIsMuted(!isMuted);
+    setFullscreenVideo(portfolios.videoUrl);
+    setFullscreenVideoType('hero');
+  };
+
+  // Function to handle carousel video click
+  const handleCarouselVideoClick = (index, url) => {
+    const newMutedStates = [...carouselVideosMuted];
+    newMutedStates[index] = !newMutedStates[index];
+    setCarouselVideosMuted(newMutedStates);
+    setFullscreenVideo(url);
+    setFullscreenVideoType('carousel');
+  };
+
+  // Function to close fullscreen
+  const closeFullscreen = () => {
+    setFullscreenVideo(null);
+    setFullscreenVideoType(null);
+  };
+
+  // Fullscreen Modal Component
+  const FullscreenVideoModal = () => {
+    if (!fullscreenVideo) return null;
+
+    const isCarouselVideo = fullscreenVideoType === 'carousel';
+    const isHeroVideo = fullscreenVideoType === 'hero';
+
+    return (
+      <div className="fullscreen-modal" onClick={closeFullscreen}>
+        {/* Close button */}
+        <button onClick={closeFullscreen} className="fullscreen-close-btn">
+          ×
+        </button>
+
+        {/* Video container */}
+        <div className="fullscreen-video-container" onClick={(e) => e.stopPropagation()}>
+          {isHeroVideo ? (
+            <video
+              src={fullscreenVideo}
+              autoPlay
+              muted={false} // Enable sound in fullscreen
+              loop
+              controls={true} // Show controls in fullscreen
+              playsInline
+              className="fullscreen-video"
+            />
+          ) : (
+            <ReactPlayer
+              url={fullscreenVideo}
+              playing={true}
+              muted={false} // Enable sound in fullscreen
+              controls={true} // Show controls in fullscreen
+              loop
+              width="100%"
+              height="100%"
+              className="fullscreen-react-player"
+              config={{
+                youtube: {
+                  playerVars: {
+                    modestbranding: 1,
+                    showinfo: 0,
+                    rel: 0,
+                    controls: 1, // Show controls in fullscreen
+                  },
+                },
+              }}
+            />
+          )}
+        </div>
+
+        {/* Instructions */}
+        <div className="fullscreen-instructions">
+          Click outside video or press ESC to close • Audio is enabled
+        </div>
+      </div>
+    );
+  };
 
   return (
     <>
       {/* Master Image */}
       {
-
         (portfolios.videoUrl) && <div className="master">
           <div className="hero-container" id="home">
             <video
-              src={portfolios.videoUrl} className="hero-video"
+              ref={videoRef}
+              src={portfolios.videoUrl} 
+              className="hero-video"
               autoPlay
-              muted
+              muted={true} // Keep muted for autoplay compliance
               loop
-              playsInline // Important for iOS
-           
+              playsInline
+              onClick={handleVideoClick}
             >
               Your browser does not support the video tag.
             </video>
+            
+            {/* Sound indicator */}
+            <div className="hero-sound-indicator">
+              🔇 Tap for fullscreen with sound
+            </div>
           </div>
-
-
-          {/* <img src={portfolios.masterImg} alt="" srcset="" /> */}
-          {/* <ReactPlayer
-            url={portfolios.videoUrl}
-            playing={true}
-            muted={true}
-            className="goodimg"
-            width="100%"
-            height="100%"
-            controls={false}
-            loop
-        /> */}
-
-        </div>}
+        </div>
+      }
 
       <div className="details-container">
         {/* Head */}
-
         <div className="details-heading">
           <h1>{portfolios.title}</h1>
           <p>{portfolios.desc}</p>
         </div>
 
-        {/*  */}
-
         {/* Good Images */}
-
         <div className="goodimg">
           {
             typeof showImage(portfolios.imageUrl) !== 'string' ? (
               <ImageCarousel images={showImage(portfolios.imageUrl)} />
             ) : (
-              portfolios.imageUrl.length > 2 && <img src={showImage(portfolios.imageUrl)} alt="" srcset="" />
+              portfolios.imageUrl.length > 2 && <img src={showImage(portfolios.imageUrl)} alt="" srcSet="" />
             )
-
           }
         </div>
 
         {/* Swiper */}
         {
           videoUrls.length > 0 &&
-          <section className="portfolio-section container relative">
+          <section className="portfolio-section container">
             {/* Navigation buttons */}
             <button
-              className="absolute left-0 top-1/2 transform -translate-y-1/2 z-10 p-3 rounded-full shadow-lg hover:bg-white/30 bg-white/10 backdrop-blur-sm"
+              className="swiper-nav-btn prev"
               onClick={() => swiperRef.current?.slidePrev()}
             >
-              <SlArrowLeft className="w-6 h-6 text-black transform " />
+              <SlArrowLeft className="swiper-nav-icon" />
             </button>
             <button
-              className="absolute right-0 top-1/2 transform -translate-y-1/2 z-10 p-3 rounded-full shadow-lg hover:bg-white/30 bg-white/10 backdrop-blur-sm"
+              className="swiper-nav-btn next"
               onClick={() => swiperRef.current?.slideNext()}
             >
-              <SlArrowRight className="w-6 h-6 text-black transform" />
+              <SlArrowRight className="swiper-nav-icon" />
             </button>
             <Swiper
               onBeforeInit={(swiper) => {
                 swiperRef.current = swiper;
               }}
-              slidesPerView={1} /* Show 1 slide on small screens */
+              slidesPerView={1}
               spaceBetween={20}
               breakpoints={{
                 640: {
@@ -187,29 +285,34 @@ const Details = () => {
               {videoUrls.map((url, index) => (
                 <SwiperSlide key={index} className="testimonial-slide">
                   <div className="testimonial-card">
-
                     <ReactPlayer
+                      ref={(el) => carouselVideoRefs.current[index] = el}
                       className="testimonial-photo"
                       url={url}
-                      playing={true} // Autoplay
-                      muted={true} // Muted
-                      controls={false} // Hide YouTube controls
-                      loop // Loop video
-                      width="100%" // Full width of container
-                      height="100%" // Full height of container
-                      playsinline={true} // Allow the video to play inline on mobile
+                      playing={true}
+                      muted={true} // Keep muted for autoplay
+                      controls={false}
+                      loop
+                      width="100%"
+                      height="100%"
+                      playsinline={true}
+                      onClick={() => handleCarouselVideoClick(index, url)}
                       config={{
                         youtube: {
                           playerVars: {
-                            modestbranding: 1, // Hides YouTube logo
-                            showinfo: 0, // Hides video title
-                            rel: 0, // Prevents showing related videos
-                            controls: 0, // Hides player controls
+                            modestbranding: 1,
+                            showinfo: 0,
+                            rel: 0,
+                            controls: 0,
                           },
                         },
                       }}
                     />
 
+                    {/* Sound indicator for carousel videos */}
+                    <div className="carousel-sound-indicator">
+                      🔇 Tap for fullscreen
+                    </div>
                   </div>
                 </SwiperSlide>
               ))}
@@ -219,6 +322,9 @@ const Details = () => {
 
         <ContactSection />
       </div>
+
+      {/* Fullscreen Video Modal */}
+      <FullscreenVideoModal />
     </>
   );
 };
