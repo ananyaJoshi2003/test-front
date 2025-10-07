@@ -27,7 +27,7 @@ import Loader from './Components/Loader/Loader.jsx';
 function App() {
   return (
     <Router>
-      // <AppContent />
+      {/* <AppContent /> */}
       <ShowMsg />
     </Router>
   );
