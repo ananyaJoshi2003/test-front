@@ -27,60 +27,90 @@ import Loader from './Components/Loader/Loader.jsx';
 function App() {
   return (
     <Router>
-      <AppContent />
+      // <AppContent />
+      <ShowMsg />
     </Router>
   );
 }
 
-function AppContent() {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate a loading delay or fetch initial resources
-    const timer = setTimeout(() => {
-      setIsLoading(false); // Stop loading after 2 seconds
-    }, 2000);
-
-    return () => clearTimeout(timer); // Cleanup on unmount
-  }, []);
-
-  if (isLoading) {
-    return <Loader />; // Show loader while loading
-  }
-
+function ShowMsg(){
   return (
-    <>
-      <Navbar />
-      <ScrollToTop />
-      <Routes>
-        <Route exact path="/" element={<Home />} />
-        <Route exact path="/Projects/:projectId" element={<Projects />} />
-        <Route path="/admin/login" element={<LoginPage />} />
-        <Route path="/Projects" element={<Projects />} />
-        <Route path="/Details/:projectId" element={<Details />} />
-        <Route path="/Form" element={<Form />} />
-
-        <Route path="/" element={<PrivateRouteAdmin />}>
-          <Route exact path="/Work" element={<WorkAdmin />} />
-          <Route exact path="/Clients" element={<ClientAdmin />} />
-          <Route exact path="/ContactList" element={<ContactList />} />
-          <Route exact path="/AdminPanel" element={<AdminPanel />} />
-          <Route exact path="/WorkList" element={<WorkList />} />
-          <Route exact path="/ClientList" element={<ClientList />} />
-          <Route exact path="/Testimonials" element={<TestimonialAdmin />} />
-          <Route
-            exact
-            path="/TestimonialsList"
-            element={<TestimonialsList />}
-          />
-          <Route exact path="/Uploads" element={<Uploads />} />
-          <Route exact path="/Data" element={<Data />} />
-          <Route exact path="/blog" element={<Blog />} />
-          <Route exact path="/blogList" element={<BlogList />} />
-        </Route>
-      </Routes>
-    </>
-  );
+      <div style={{
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        backgroundColor: '#f5f5f5',
+        fontFamily: 'Arial, sans-serif'
+      }}>
+        <div style={{
+          textAlign: 'center',
+          padding: '40px',
+          backgroundColor: 'white',
+          borderRadius: '12px',
+          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)'
+        }}>
+          <h1 style={{
+            fontSize: '2rem',
+            color: '#333',
+            margin: '0'
+          }}>
+            We're out grabbing snacks 🍿 Be back soon!
+          </h1>
+        </div>
+      </div>
+    );
 }
+
+// function AppContent() {
+//   const [isLoading, setIsLoading] = useState(true);
+
+//   useEffect(() => {
+//     // Simulate a loading delay or fetch initial resources
+//     const timer = setTimeout(() => {
+//       setIsLoading(false); // Stop loading after 2 seconds
+//     }, 2000);
+
+//     return () => clearTimeout(timer); // Cleanup on unmount
+//   }, []);
+
+//   if (isLoading) {
+//     return <Loader />; // Show loader while loading
+//   }
+
+//   return (
+//     <>
+//       <Navbar />
+//       <ScrollToTop />
+//       <Routes>
+//         <Route exact path="/" element={<Home />} />
+//         <Route exact path="/Projects/:projectId" element={<Projects />} />
+//         <Route path="/admin/login" element={<LoginPage />} />
+//         <Route path="/Projects" element={<Projects />} />
+//         <Route path="/Details/:projectId" element={<Details />} />
+//         <Route path="/Form" element={<Form />} />
+
+//         <Route path="/" element={<PrivateRouteAdmin />}>
+//           <Route exact path="/Work" element={<WorkAdmin />} />
+//           <Route exact path="/Clients" element={<ClientAdmin />} />
+//           <Route exact path="/ContactList" element={<ContactList />} />
+//           <Route exact path="/AdminPanel" element={<AdminPanel />} />
+//           <Route exact path="/WorkList" element={<WorkList />} />
+//           <Route exact path="/ClientList" element={<ClientList />} />
+//           <Route exact path="/Testimonials" element={<TestimonialAdmin />} />
+//           <Route
+//             exact
+//             path="/TestimonialsList"
+//             element={<TestimonialsList />}
+//           />
+//           <Route exact path="/Uploads" element={<Uploads />} />
+//           <Route exact path="/Data" element={<Data />} />
+//           <Route exact path="/blog" element={<Blog />} />
+//           <Route exact path="/blogList" element={<BlogList />} />
+//         </Route>
+//       </Routes>
+//     </>
+//   );
+// }
 
 export default App;
